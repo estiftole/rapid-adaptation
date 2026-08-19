@@ -1,2 +1,4 @@
 cartpole/saved/
 .venv/
+
+__pycache__/
