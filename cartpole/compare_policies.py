@@ -10,9 +10,9 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
     env = PrivilegedObservationWrapper(env)
 
     if model_type == "UNIVERSAL":
-        model = PPO.load("saved/univ_cartpole_ppo")
+        model = PPO.load("checkpoints/univ_cartpole_ppo")
     else:
-        model = PPO.load("saved/naive_cartpole_ppo")
+        model = PPO.load("checkpoints/naive_cartpole_ppo")
 
     results = []
 

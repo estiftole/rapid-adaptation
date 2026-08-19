@@ -29,6 +29,6 @@ if __name__ == "__main__":
     model = PPO("MlpPolicy", env, verbose=1)
     _ = model.learn(total_timesteps=50_000)
 
-    save_location = "saved/univ_cartpole_ppo"
+    save_location = "checkpoints/univ_cartpole_ppo"
     model.save(save_location)
     print(f"Model training complete! Model saved as '{save_location}.zip'.")
