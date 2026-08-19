@@ -1,5 +1,5 @@
 def main():
-    print("Hello from rapid-adaptation.main!")
+    print("Hello from rapid-adaptation!")
 
 
 if __name__ == "__main__":
