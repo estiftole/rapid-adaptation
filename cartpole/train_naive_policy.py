@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     print("Training Standard Baseline PPO on default parameters...")
     baseline_model = PPO("MlpPolicy", env, verbose=1)
-    baseline_model.learn(total_timesteps=50_000)
+    baseline_model.learn(total_timesteps=100_000)
 
     save_location = "checkpoints/naive_cartpole_ppo"
     baseline_model.save(save_location)

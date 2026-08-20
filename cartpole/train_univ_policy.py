@@ -16,10 +16,10 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
         high = np.append(env.observation_space.high, [0.5, 1.5]).astype(np.float32)
         self.observation_space = spaces.Box(low=low, high=high, dtype=np.float32)
 
-    def observation(self, observation):
+    def observation(self, obs):
         mass = self.env.unwrapped.masspole
         length = self.env.unwrapped.length
-        return np.append(observation, [mass, length]).astype(np.float32)
+        return np.append(obs, [mass, length]).astype(np.float32)
 
 if __name__ == "__main__":
     env = CustomCartPoleEnv()
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     print("Training Universal Policy with PPO...")
     model = PPO("MlpPolicy", env, verbose=1)
-    _ = model.learn(total_timesteps=50_000)
+    _ = model.learn(total_timesteps=100_000)
 
     save_location = "checkpoints/univ_cartpole_ppo"
     model.save(save_location)
