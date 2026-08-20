@@ -1,1 +1,1 @@
-Exploring training models for rapid adaptation to unseen environment parameters.
+Exploring models that rapidly adapt to unseen environment parameters.
