@@ -16,11 +16,11 @@ if __name__ == "__main__":
     model = PPO(
         "MlpPolicy",
         env,
-        learning_rate=2e-4,        # Slightly lower learning rate for stability
-        n_steps=4096,              # Doubled rollout buffer (more trajectory context)
-        batch_size=128,            # Larger mini-batches to handle trajectory variance
+        learning_rate=2e-4,
+        n_steps=4096,
+        batch_size=128,
         n_epochs=10,
-        ent_coef=0.005,            # FORCES exploration; stops premature "ducking"
+        ent_coef=0.005,
         gae_lambda=0.95,
         gamma=0.99,
         verbose=1
