@@ -11,7 +11,7 @@ if __name__ == "__main__":
         )
     )
 
-    train_steps = 1_000_000
+    train_steps = 10_000_000
     print("Training Naive Baseline Policy on standard BipedalWalker-v3...")
     model = PPO(
         "MlpPolicy",

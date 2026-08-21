@@ -72,10 +72,10 @@ def evaluate_model(model_type: str, num_episodes: int = 5, max_steps: int = 500,
 
 if __name__ == "__main__":
     max_steps = 500
-    num_episodes = 5
-    render = True
-    # num_episodes = 50
-    # render = False
+    # num_episodes = 5
+    # render = True
+    num_episodes = 200
+    render = False
 
     print(f"Running stress test comparison ({num_episodes} episodes each)...")
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     print(f"\n--- Results (Average Steps Survived) ---")
     print(f"Naive Policy:     {naive_avg:.2f} steps")
     naive_fails = [r for r in naive_results if r['steps'] < max_steps]
-    print(f"\nNaive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
+    print(f"Naive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
 
 
     univ_results = evaluate_model("UNIVERSAL", num_episodes, max_steps, render)

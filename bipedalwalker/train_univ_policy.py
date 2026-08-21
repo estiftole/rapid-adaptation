@@ -24,13 +24,13 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
         return np.append(obs, [f_norm, d_norm, l_norm]).astype(np.float32)
 
 def make_env():
-    env = CustomBipedalWalkerEnv(randomize_freq=10)
+    env = CustomBipedalWalkerEnv(randomize_freq=20)
     env = PrivilegedObservationWrapper(env)
     return env
 
 if __name__ == "__main__":
     # Wrap in DummyVecEnv and VecNormalize (CRITICAL for continuous locomotion)
-    train_steps = 1_000_000
+    train_steps = 10_000_000
     vec_env = DummyVecEnv([make_env])
     env = VecNormalize(vec_env, norm_obs=True, norm_reward=True, clip_obs=10.0)
     # 2. Configure PPO for continuous locomotion (256x256 MLP)
