@@ -45,10 +45,10 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
 
 if __name__ == "__main__":
     max_steps = 200
-    # num_episodes = 50
-    # render = False
-    num_episodes = 5
-    render = True
+    num_episodes = 200
+    render = False
+    # num_episodes = 5
+    # render = True
     print(f"Running stress test comparison ({num_episodes} episodes each)...")
 
     naive_results = evaluate_model("NAIVE", num_episodes, max_steps, render)
