@@ -11,7 +11,7 @@ class ProceduralPusherEnv(gym.Env):
         self.render_mode = render_mode
         self.episode_counter = 0
 
-        # 1. Dynamically locate the base Pusher XML in the installed Gymnasium package
+
         self.base_xml_path = os.path.join(
             os.path.dirname(gym.__file__),
             "envs", "mujoco", "assets", "pusher.xml"
@@ -20,14 +20,14 @@ class ProceduralPusherEnv(gym.Env):
         self.current_xml_file = None
         self.env = None
 
-        # Define the range for the arm length multiplier (70% to 130% length)
+
         self.arm_scale_range = (0.1, 1)
         self.true_forearm_scale = 1.0
 
-        # Initialize the first compiled environment
+
         self._rebuild_environment()
 
-        # Inherit Gym spaces from the underlying MuJoCo environment
+
         self.observation_space = self.env.observation_space
         self.action_space = self.env.action_space
 
@@ -36,11 +36,11 @@ class ProceduralPusherEnv(gym.Env):
         if self.env is not None:
             self.env.close()
 
-        # Parse the base XML tree
+
         tree = ET.parse(self.base_xml_path)
         root = tree.getroot()
 
-        # --- THE KINEMATIC CHAIN MODIFICATION ---
+
         upper_arm = root.find(".//body[@name='r_forearm_link']")
         if upper_arm is not None:
             geom = upper_arm.find("geom")
@@ -53,7 +53,7 @@ class ProceduralPusherEnv(gym.Env):
                 coords[3:] = start_coords + delta
                 geom.attrib["fromto"] = " ".join(map(lambda x: f"{x:.4f}", coords))
 
-            # Scale child positions nested under upper arm to preserve alignment
+
             # for child in upper_arm.iter():
             #     if "pos" in child.attrib:
             #         pos = np.array([float(x) for x in child.attrib["pos"].split()])
@@ -65,33 +65,33 @@ class ProceduralPusherEnv(gym.Env):
             child = root.find(".//body[@name='r_wrist_flex_link']")
             if child is not None and "pos" in child.attrib:
                 pos = np.array([float(x) for x in child.attrib["pos"].split()])
-                # pos = pos * self.true_forearm_scale
+
                 shift = pos-end_coords
                 print('shift', shift)
                 pos = start_coords + delta + shift
                 child.attrib["pos"] = " ".join(map(lambda x: f"{x:.4f}", pos))
 
-        # Save the modified XML tree to a temporary file
+
         fd, temp_path = tempfile.mkstemp(suffix=".xml")
         os.close(fd)
         tree.write(temp_path)
 
-        # Clean up the previous temporary file to prevent memory leaks
+
         if self.current_xml_file and os.path.exists(self.current_xml_file):
             os.remove(self.current_xml_file)
 
         self.current_xml_file = temp_path
 
-        # Initialize standard Gym Pusher-v5, but point it to our custom XML file
+
         self.env = gym.make("Pusher-v5", xml_file=self.current_xml_file, render_mode=self.render_mode)
 
     def reset(self, seed=None, options=None):
-        # Determine if it is time to mutate the robot's physical structure
+
         if self.episode_counter % self.randomize_freq == 0:
             if seed is not None:
                 np.random.seed(seed)
 
-            # Sample a new scale and trigger the XML recompilation
+
             self.true_forearm_scale = np.random.uniform(*self.arm_scale_range)
             self._rebuild_environment()
 
@@ -99,7 +99,7 @@ class ProceduralPusherEnv(gym.Env):
 
         obs, info = self.env.reset(seed=seed, options=options)
 
-        # Pass the true arm scale into the info dict for your Teacher network
+
         info["true_forearm_scale"] = self.true_forearm_scale
         return obs, info
 
@@ -113,7 +113,7 @@ class ProceduralPusherEnv(gym.Env):
             os.remove(self.current_xml_file)
 
 if __name__ == "__main__":
-    # Test script to verify the generator
+
     env = ProceduralPusherEnv(randomize_freq=1, render_mode="human")
 
     print("Initializing Procedural Pusher. Watch the arm length change on resets.")
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     obs, info = env.reset()
     print(f"Arm Scale: {info['true_forearm_scale']:.2f}")
 
-    # Run a few random steps to visualize the arm physics
+
     for _ in range(100):
         action = env.action_space.sample()
         # action = env.action_space
