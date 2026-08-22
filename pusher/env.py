@@ -63,11 +63,9 @@ class CustomPusherEnv(gym.Env):
         fd, temp_path = tempfile.mkstemp(suffix=".xml")
         os.close(fd)
         tree.write(temp_path)
-        tree.write('tempxml.xml')
 
         if self.current_xml_file and os.path.exists(self.current_xml_file):
             os.remove(self.current_xml_file)
-
         self.current_xml_file = temp_path
 
         self.env = gym.make("Pusher-v5", xml_file=self.current_xml_file, render_mode=self.render_mode)

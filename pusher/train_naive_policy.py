@@ -4,7 +4,7 @@ from stable_baselines3 import PPO
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 500_000
+    train_steps = 1_000_000
     env = gym.make("Pusher-v5")
 
     policy_kwargs = dict(net_arch=dict(pi=[256, 256],vf=[256, 256]))

@@ -2,13 +2,10 @@ import numpy as np
 from stable_baselines3 import PPO
 from env import CustomPusherEnv
 from train_univ_policy import PrivilegedObservationWrapper
-import gymnasium as gym
-import mujoco
 
 def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, render: int =False) -> list:
     print(f"Evaluating {model_type} Model")
 
-    # env = gym.make("Pusher-v5", render_mode=("human" if render else None))
     env = CustomPusherEnv(render_mode=("human" if render else None))
     env = PrivilegedObservationWrapper(env)
 
@@ -26,7 +23,6 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
         steps = 0
 
         while not done:
-            # action, _ = model.predict(obs, deterministic=True)
             if model_type == "UNIVERSAL":
                 action, _ = model.predict(obs, deterministic=True)
             else:
@@ -40,8 +36,6 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
                 # time.sleep(0.01)
 
         results.append({
-            # "mass": start_info['true_mass'],
-            # "length": start_info['true_length'],
             "steps": steps
         })
 
@@ -50,10 +44,10 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
 
 if __name__ == "__main__":
     max_steps = 500
-    # num_episodes = 200
-    # render = False
-    num_episodes = 5
-    render = True
+    num_episodes = 200
+    render = False
+    # num_episodes = 5
+    # render = True
     print(f"Running stress test comparison ({num_episodes} episodes each)...")
 
     naive_results = evaluate_model("NAIVE", num_episodes, max_steps, render)
