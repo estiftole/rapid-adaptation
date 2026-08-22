@@ -1,4 +1,4 @@
-checkpoints/
 .venv/
 __pycache__/
+checkpoints/
 videos/
