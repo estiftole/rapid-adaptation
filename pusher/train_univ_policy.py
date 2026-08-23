@@ -26,8 +26,8 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 1_000_000
-    env = CustomPusherEnv(randomize_freq=10)
+    train_steps = 5_000_000
+    env = CustomPusherEnv(randomize_freq=15)
     env = PrivilegedObservationWrapper(env)
 
     policy_kwargs = dict(net_arch=dict(pi=[256, 256],vf=[256, 256]))
