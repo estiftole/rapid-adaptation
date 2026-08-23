@@ -3,6 +3,7 @@ from gymnasium import spaces
 import numpy as np
 from stable_baselines3 import PPO
 from env import CustomPusherEnv
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 import os
 
 class PrivilegedObservationWrapper(gym.ObservationWrapper):
@@ -33,11 +34,17 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
         return np.append(obs, [putt_mass_norm, putt_size_norm, forearm_scale_norm]).astype(np.float32)
 
 
-if __name__ == "__main__":
-    os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 5_000_000
+
+def make_env():
     env = CustomPusherEnv(randomize_freq=15)
     env = PrivilegedObservationWrapper(env)
+    return env
+
+if __name__ == "__main__":
+    os.makedirs("checkpoints", exist_ok=True)
+    train_steps = 10_000_000
+    vec_env = DummyVecEnv([make_env])
+    env = VecNormalize(vec_env, norm_obs=True, norm_reward=True, clip_obs=10.0)
 
     policy_kwargs = dict(net_arch=dict(pi=[256, 256],vf=[256, 256]))
 
@@ -59,6 +66,7 @@ if __name__ == "__main__":
 
     save_path = "checkpoints/univ_pusher_ppo"
     model.save(save_path)
+    vec_env = model.get_vec_normalize_env()
+    vec_env.save("checkpoints/univ_pusher_vecnormalize.pkl")
     print(f"\nUniversal Baseline training complete! Model saved to '{save_path}.zip'.")
-
     env.close()
