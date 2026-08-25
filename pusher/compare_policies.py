@@ -15,10 +15,10 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
         model = PPO.load("checkpoints/univ_pusher_ppo")
 
         # Load the VecNormalize statistics using a temporary DummyVecEnv
-        temp_venv = DummyVecEnv([lambda: env])
-        vec_norm = VecNormalize.load("checkpoints/univ_pusher_vecnormalize.pkl", temp_venv)
-        vec_norm.training = False     # Disable stats updating during evaluation
-        vec_norm.norm_reward = False  # We only need observation normalization
+        # temp_venv = DummyVecEnv([lambda: env])
+        # vec_norm = VecNormalize.load("checkpoints/univ_pusher_vecnormalize.pkl", temp_venv)
+        # vec_norm.training = False     # Disable stats updating during evaluation
+        # vec_norm.norm_reward = False  # We only need observation normalization
     else:
         model = PPO.load("checkpoints/naive_pusher_ppo")
 
@@ -33,8 +33,9 @@ def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, r
         while not done:
             if model_type == "UNIVERSAL":
                 # Manually apply VecNormalize to the unvectorized observation
-                obs_normalized = vec_norm.normalize_obs(obs)
-                action, _ = model.predict(obs_normalized, deterministic=True)
+                # obs_normalized = vec_norm.normalize_obs(obs)
+                action, _ = model.predict(obs, deterministic=True)
+                # action, _ = model.predict(obs_normalized, deterministic=True)
             else:
                 action, _ = model.predict(obs[:-3], deterministic=True)
 
@@ -55,12 +56,12 @@ if __name__ == "__main__":
     render = True
     print(f"Running stress test comparison ({num_episodes} episodes each)...")
 
-    naive_results = evaluate_model("NAIVE", num_episodes, max_steps, render)
-    naive_avg = np.mean([r['steps'] for r in naive_results])
-    print(f"\n--- Results (Average Steps Survived) ---")
-    print(f"Naive Policy:     {naive_avg:.2f} steps")
-    naive_fails = [r for r in naive_results if r['steps'] < max_steps]
-    print(f"Naive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
+    # naive_results = evaluate_model("NAIVE", num_episodes, max_steps, render)
+    # naive_avg = np.mean([r['steps'] for r in naive_results])
+    # print(f"\n--- Results (Average Steps Survived) ---")
+    # print(f"Naive Policy:     {naive_avg:.2f} steps")
+    # naive_fails = [r for r in naive_results if r['steps'] < max_steps]
+    # print(f"Naive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
 
     univ_results = evaluate_model("UNIVERSAL", num_episodes, max_steps, render)
     univ_avg = np.mean([r['steps'] for r in univ_results])
