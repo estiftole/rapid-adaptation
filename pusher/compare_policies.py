@@ -62,9 +62,9 @@ if __name__ == "__main__":
     naive_fails = [r for r in naive_results if r['steps'] < max_steps]
     print(f"Naive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
 
-    # univ_results = evaluate_model("UNIVERSAL", num_episodes, max_steps, render)
-    # univ_avg = np.mean([r['steps'] for r in univ_results])
-    # print(f"\n--- Results (Average Steps Survived) ---")
-    # print(f"Universal Policy: {univ_avg:.2f} steps")
-    # univ_fails = [r for r in univ_results if r['steps'] < max_steps]
-    # print(f"Universal Policy failed on {len(univ_fails)} out of {num_episodes} episodes.")
+    univ_results = evaluate_model("UNIVERSAL", num_episodes, max_steps, render)
+    univ_avg = np.mean([r['steps'] for r in univ_results])
+    print(f"\n--- Results (Average Steps Survived) ---")
+    print(f"Universal Policy: {univ_avg:.2f} steps")
+    univ_fails = [r for r in univ_results if r['steps'] < max_steps]
+    print(f"Universal Policy failed on {len(univ_fails)} out of {num_episodes} episodes.")

@@ -42,7 +42,7 @@ def make_env():
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 10_000_000
+    train_steps = 5_000_000
     vec_env = DummyVecEnv([make_env])
     env = VecNormalize(vec_env, norm_obs=True, norm_reward=True, clip_obs=10.0)
 
