@@ -49,17 +49,17 @@ def make_env():
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 5_000_000
+    train_steps = 4_000_000
     # vec_env = DummyVecEnv([make_env])
     # env = VecNormalize(vec_env, norm_obs=True, norm_reward=True, clip_obs=10.0)
     env = make_env()
 
     policy_kwargs = dict(
         net_arch=dict(
-            pi=[256, 256],       # 2-layer policy network
-            vf=[512, 512]        # Larger 2-layer value network for dynamic physics
+            pi=[256, 256],
+            vf=[512, 512]
         ),
-        log_std_init=-1.0        # Keeps initial joint control tame
+        log_std_init=-1.0
     )
 
 

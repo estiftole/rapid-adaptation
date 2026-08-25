@@ -4,15 +4,15 @@ from stable_baselines3 import PPO
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 5_000_000
+    train_steps = 4_000_000
     env = gym.make("Pusher-v5")
 
     policy_kwargs = dict(
         net_arch=dict(
-            pi=[256, 256],       # 2-layer policy network
-            vf=[512, 512]        # Larger 2-layer value network for dynamic physics
+            pi=[256, 256],
+            vf=[512, 512]
         ),
-        log_std_init=-1.0        # Keeps initial joint control tame
+        log_std_init=-1.0
     )
 
     print(f"Training Naive Baseline Policy on standard Pusher-v5 ({train_steps} steps)...")
