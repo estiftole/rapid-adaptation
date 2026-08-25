@@ -43,13 +43,13 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
 
 
 def make_env():
-    env = CustomPusherEnv(randomize_freq=15)
+    env = CustomPusherEnv(randomize_freq=30)
     env = PrivilegedObservationWrapper(env)
     return env
 
 if __name__ == "__main__":
     os.makedirs("checkpoints", exist_ok=True)
-    train_steps = 4_000_000
+    train_steps = 5_000_000
     # vec_env = DummyVecEnv([make_env])
     # env = VecNormalize(vec_env, norm_obs=True, norm_reward=True, clip_obs=10.0)
     env = make_env()

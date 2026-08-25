@@ -8,10 +8,9 @@ import gymnasium as gym
 def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, render_mode: str | None = None) -> list:
     print(f"Evaluating {model_type} Model")
 
-
     # env = gym.make("Pusher-v5", render_mode=render_mode)
-
     env = CustomPusherEnv(render_mode=render_mode)
+
     if render_mode=='rgb_array':
         from gymnasium.wrappers import RecordVideo
 
