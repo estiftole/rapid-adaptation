@@ -14,18 +14,25 @@ class PrivilegedObservationWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super().__init__(env)
 
-        low = np.append(env.observation_space.low, [0.2, 0.03, 0.3]).astype(np.float32)
-        high = np.append(env.observation_space.high, [5., 0.08, 1.7]).astype(np.float32)
+        low = np.append(env.observation_space.low, [0.3]).astype(np.float32)
+        high = np.append(env.observation_space.high, [1.7]).astype(np.float32)
+
+        # low = np.append(env.observation_space.low, [0.2, 0.03, 0.3]).astype(np.float32)
+        # high = np.append(env.observation_space.high, [5., 0.08, 1.7]).astype(np.float32)
 
         # low = np.append(env.observation_space.low, [-1.0, -1.0, -1.0]).astype(np.float32)
         # high = np.append(env.observation_space.high, [1.0, 1.0, 1.0]).astype(np.float32)
         self.observation_space = spaces.Box(low=low, high=high, dtype=np.float32)
 
     def observation(self, obs):
-        putt_mass = self.env.unwrapped.putt_mass
-        putt_size = self.env.unwrapped.putt_size
-        forearm_scale = self.env.unwrapped.forearm_scale
-        return np.append(obs, [putt_mass, putt_size, forearm_scale]).astype(np.float32)
+        # putt_mass = self.env.unwrapped.putt_mass
+        # putt_size = self.env.unwrapped.putt_size
+        try:
+            forearm_scale = self.env.unwrapped.forearm_scale
+        except:
+            forearm_scale = 1
+        return np.append(obs, [forearm_scale]).astype(np.float32)
+        # return np.append(obs, [putt_mass, putt_size, forearm_scale]).astype(np.float32)
 
         # putt_mass_norm = 2.0 * (self.env.unwrapped.putt_mass - 0.2) / (5. - 0.2) - 1.0
         # putt_size_norm = 2.0 * (self.env.unwrapped.putt_size - 0.03) / (0.08 - 0.03) - 1.0

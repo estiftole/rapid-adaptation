@@ -8,7 +8,7 @@ import numpy as np
 class CustomPusherEnv(gym.Env):
     def __init__(self, randomize_freq=1, render_mode=None):
         self.randomize_freq = randomize_freq
-        self.render_mode = render_mode
+        self._render_mode = render_mode
         self.episode_counter = 0
 
         self.base_xml_path = os.path.join(
@@ -19,19 +19,27 @@ class CustomPusherEnv(gym.Env):
         self.current_xml_file = None
         self.env = None
 
-        self.putt_mass_range = (0.2, 5.0)     # Light as a feather to heavy brick
-        self.putt_size_range = (0.03, 0.08)   # Tiny cylinder to wide cylinder
         self.forearm_scale_range = (0.3, 1.7)
-
-        self.putt_mass = 1.0
-        self.putt_size = 0.05
         self.forearm_scale = 1.0
-
 
         self._rebuild_environment()
 
         self.observation_space = self.env.observation_space
         self.action_space = self.env.action_space
+
+    @property
+    def render_mode(self):
+        return self._render_mode
+
+    @property
+    def metadata(self):
+        if self.env is not None:
+            return self.env.metadata
+        return {"render_modes": ["human", "rgb_array", "depth_array"], "render_fps": 25}
+
+    def render(self):
+        if self.env is not None:
+            return self.env.render()
 
     def _rebuild_environment(self):
         """Parses the XML, applies kinematic scaling, and re-initializes MuJoCo."""
@@ -57,7 +65,6 @@ class CustomPusherEnv(gym.Env):
             if child is not None and "pos" in child.attrib:
                 pos = np.array([float(x) for x in child.attrib["pos"].split()])
                 pos += -end_coords + start_coords + delta
-
                 child.attrib["pos"] = " ".join(f"{x:.4f}".rstrip('0').rstrip('.') for x in pos)
 
         fd, temp_path = tempfile.mkstemp(suffix=".xml")
@@ -68,13 +75,11 @@ class CustomPusherEnv(gym.Env):
             os.remove(self.current_xml_file)
         self.current_xml_file = temp_path
 
-        self.env = gym.make("Pusher-v5", xml_file=self.current_xml_file, render_mode=self.render_mode)
+        self.env = gym.make("Pusher-v5", xml_file=self.current_xml_file, render_mode=self._render_mode)
 
     def reset(self, seed=None, options=None):
 
         if self.episode_counter % self.randomize_freq == 0:
-            self.putt_mass = np.random.uniform(*self.putt_mass_range)
-            self.putt_size = np.random.uniform(*self.putt_size_range)
             self.forearm_scale = np.random.uniform(*self.forearm_scale_range)
 
             if seed is not None:
