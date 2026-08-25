@@ -7,16 +7,22 @@ if __name__ == "__main__":
     train_steps = 10_000_000
     env = gym.make("Pusher-v5")
 
-    policy_kwargs = dict(net_arch=dict(pi=[256, 256],vf=[256, 256]))
+    policy_kwargs = dict(
+        net_arch=dict(
+            pi=[256, 256],       # 2-layer policy network
+            vf=[512, 512]        # Larger 2-layer value network for dynamic physics
+        ),
+        log_std_init=-1.0        # Keeps initial joint control tame
+    )
 
     print(f"Training Naive Baseline Policy on standard Pusher-v5 ({train_steps} steps)...")
     model = PPO(
         "MlpPolicy",
         env,
         policy_kwargs=policy_kwargs,
-        learning_rate=3e-4,
-        n_steps=2048,
-        batch_size=64,
+        learning_rate=1.5e-4,    # Reduced learning rate for larger network stability
+        n_steps=4096,
+        batch_size=128,
         n_epochs=10,
         gamma=0.99,
         gae_lambda=0.95,
