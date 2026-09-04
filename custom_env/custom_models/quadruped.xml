@@ -1,12 +1,13 @@
-<mujoco model="green_wheeled_quadruped">
+<mujoco model="green_quadruped_uniform">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+
   <option timestep="0.002" integrator="implicitfast">
     <flag warmstart="enable"/>
   </option>
 
   <default>
-    <geom rgba="0.45 0.7 0.5 1" density="1000"/>
-    <joint damping="0.5" armature="0.01" limited="true"/>
+    <geom rgba="0.45 0.7 0.5 1" density="1000" friction="1 0.005 0.0001"/>
+    <joint damping="1.0" armature="0.01" limited="true"/>
     <motor gear="40"/>
   </default>
 
@@ -17,6 +18,7 @@
     <body name="torso" pos="0 0 0.45">
       <freejoint/>
       <geom name="torso_box" type="box" size="0.18 0.1 0.06"/>
+
       <body name="fl_leg" pos="0.12 0.12 0">
         <joint name="fl_hip" type="hinge" axis="0 1 0" range="-60 60"/>
         <geom name="fl_hip_cyl" type="cylinder" fromto="0 -0.02 0 0 0.04 0" size="0.035"/>
@@ -24,15 +26,9 @@
         <body name="fl_shin" pos="-0.04 0 -0.15">
           <joint name="fl_knee" type="hinge" axis="0 1 0" range="-120 0"/>
           <geom name="fl_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-
-          <body name="fl_wheel_hub" pos="0.04 0 -0.15">
-            <joint name="fl_wheel" type="hinge" axis="0 1 0" limited="false"/>
-            <geom name="fl_wheel_disc" type="cylinder" size="0.05 0.01" quat="0.7071 0.7071 0 0"
-                  friction="1.5 0.01 0.005" rgba="0.45 0.7 0.5 1"/>
-          </body>
+          <geom name="fl_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
         </body>
       </body>
-
 
       <body name="fr_leg" pos="0.12 -0.12 0">
         <joint name="fr_hip" type="hinge" axis="0 1 0" range="-60 60"/>
@@ -41,14 +37,9 @@
         <body name="fr_shin" pos="-0.04 0 -0.15">
           <joint name="fr_knee" type="hinge" axis="0 1 0" range="-120 0"/>
           <geom name="fr_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <body name="fr_wheel_hub" pos="0.04 0 -0.15">
-            <joint name="fr_wheel" type="hinge" axis="0 1 0" limited="false"/>
-            <geom name="fr_wheel_disc" type="cylinder" size="0.05 0.01" quat="0.7071 0.7071 0 0"
-                  friction="1.5 0.01 0.005" rgba="0.45 0.7 0.5 1"/>
-          </body>
+          <geom name="fr_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
         </body>
       </body>
-
 
       <body name="bl_leg" pos="-0.12 0.12 0">
         <joint name="bl_hip" type="hinge" axis="0 1 0" range="-60 60"/>
@@ -57,14 +48,9 @@
         <body name="bl_shin" pos="-0.04 0 -0.15">
           <joint name="bl_knee" type="hinge" axis="0 1 0" range="-120 0"/>
           <geom name="bl_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <body name="bl_wheel_hub" pos="0.04 0 -0.15">
-            <joint name="bl_wheel" type="hinge" axis="0 1 0" limited="false"/>
-            <geom name="bl_wheel_disc" type="cylinder" size="0.05 0.01" quat="0.7071 0.7071 0 0"
-                  friction="1.5 0.01 0.005" rgba="0.45 0.7 0.5 1"/>
-          </body>
+          <geom name="bl_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
         </body>
       </body>
-
 
       <body name="br_leg" pos="-0.12 -0.12 0">
         <joint name="br_hip" type="hinge" axis="0 1 0" range="-60 60"/>
@@ -73,11 +59,7 @@
         <body name="br_shin" pos="-0.04 0 -0.15">
           <joint name="br_knee" type="hinge" axis="0 1 0" range="-120 0"/>
           <geom name="br_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <body name="br_wheel_hub" pos="0.04 0 -0.15">
-            <joint name="br_wheel" type="hinge" axis="0 1 0" limited="false"/>
-            <geom name="br_wheel_disc" type="cylinder" size="0.05 0.01" quat="0.7071 0.7071 0 0"
-                  friction="1.5 0.01 0.005" rgba="0.45 0.7 0.5 1"/>
-          </body>
+          <geom name="br_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
         </body>
       </body>
     </body>
@@ -92,10 +74,5 @@
     <motor joint="bl_knee" gear="40"/>
     <motor joint="br_hip" gear="40"/>
     <motor joint="br_knee" gear="40"/>
-
-    <velocity joint="fl_wheel" gear="10"/>
-    <velocity joint="fr_wheel" gear="10"/>
-    <velocity joint="bl_wheel" gear="10"/>
-    <velocity joint="br_wheel" gear="10"/>
   </actuator>
 </mujoco>
