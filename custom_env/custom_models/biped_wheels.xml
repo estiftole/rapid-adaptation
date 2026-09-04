@@ -1,14 +1,11 @@
 <mujoco model="purple_wheeled_balancer">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
-
   <option timestep="0.002" integrator="implicitfast">
     <flag warmstart="enable"/>
   </option>
 
   <default>
-
     <geom rgba="0.67 0.5 0.7 1" density="1000"/>
-
     <joint damping="0.5" armature="0.01" stiffness="0" limited="true"/>
     <motor gear="20"/>
   </default>
@@ -22,7 +19,6 @@
       <freejoint/>
       <geom name="torso_box" type="box" size="0.1 0.18 0.3"/>
 
-
       <geom name="pelvis_sphere" type="sphere" size="0.06" pos="0 0 -0.36"/>
       <geom name="pelvis_cyl_left" type="cylinder" fromto="0 0.05 -0.36  0 0.12 -0.36" size="0.035"/>
       <geom name="pelvis_cyl_right" type="cylinder" fromto="0 -0.05 -0.36  0 -0.12 -0.36" size="0.035"/>
@@ -34,10 +30,8 @@
         <geom name="left_thigh" type="cylinder" fromto="0 0 0  0 0 -0.3" size="0.03"/>
 
         <body name="left_shin" pos="0 0 -0.32">
-
           <joint name="left_knee" type="hinge" axis="0 1 0" range="0 120"/>
           <geom name="left_shin_geom" type="cylinder" fromto="0 0 0  0 0 -0.2" size="0.025"/>
-
 
           <body name="left_wheel_hub" pos="0 0 -0.2">
             <joint name="left_wheel" type="hinge" axis="0 1 0" limited="false"/>
