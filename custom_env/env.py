@@ -9,4 +9,4 @@ class CustomEvnrionment(gym.Env):
     def render(self): pass
     def close(self): pass
 
-# uv run -m mujoco.viewer
+# uv run -m mujoco.viewer --mjcf=custom_env/custom_models/model.xml
