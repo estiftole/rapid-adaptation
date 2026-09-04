@@ -1,12 +1,10 @@
 <mujoco model="green_wheeled_quadruped">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
-
   <option timestep="0.002" integrator="implicitfast">
     <flag warmstart="enable"/>
   </option>
 
   <default>
-
     <geom rgba="0.45 0.7 0.5 1" density="1000"/>
     <joint damping="0.5" armature="0.01" limited="true"/>
     <motor gear="40"/>
@@ -90,6 +88,7 @@
   </worldbody>
 
   <actuator>
+
     <motor joint="fl_hip" gear="40"/>
     <motor joint="fl_knee" gear="40"/>
     <motor joint="fr_hip" gear="40"/>
