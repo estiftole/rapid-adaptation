@@ -1,12 +1,118 @@
-import gymnasium as gym
+import os
+import tempfile
+import time
+import mujoco
+from gymnasium.envs.mujoco import MujocoEnv
+import numpy as np
+import typing
 
-class CustomEvnrionment(gym.Env):
-    def __init__(self): pass
-    def _get_obs_(self): pass
-    def _get_reward_(self): pass
-    def reset(self, seed, options): pass
-    def step(self, action): pass
-    def render(self): pass
-    def close(self): pass
+class SwappableLocomotionEnv(MujocoEnv):
+    metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 100}
+    DEFAULT_CAMERA_CONFIG: typing.ClassVar = {
+        "distance": 5.5,
+        "elevation": -20.0,
+        "azimuth": 90.0,
+        "lookat": [0.0, 0.0, 1.0],
+    }
+
+    def __init__(self, scene_xml_path="custom_models/flat_scene.xml", robot_xml_path="custom_models/model.xml", **kwargs):
+        scene_xml_content = f"""
+        <mujoco model="walking_scene">
+          <include file="{os.path.abspath(scene_xml_path)}"/>
+          <include file="{os.path.abspath(robot_xml_path)}"/>
+        </mujoco>
+        """
+
+        self.tmp_model = tempfile.NamedTemporaryFile(suffix=".xml", delete=False, mode="w")
+        self.tmp_model.write(scene_xml_content)
+        self.tmp_model.close()
+
+        super().__init__(
+            model_path=self.tmp_model.name,
+            frame_skip=5,
+            observation_space=None,
+            default_camera_config=self.DEFAULT_CAMERA_CONFIG,
+            **kwargs
+        )
+
+        # setup camera
+        self.setup_camera()
+
+
+    def setup_camera(self):
+        self.render()
+        self.mujoco_renderer.viewer.cam.type = mujoco.mjtCamera.mjCAMERA_TRACKING
+        self.mujoco_renderer.viewer.cam.trackbodyid = mujoco.mj_name2id(
+            self.model,
+            mujoco.mjtObj.mjOBJ_BODY,
+            "torso"
+        )
+    def step(self, action):
+        self.do_simulation(action, self.frame_skip)
+
+        # Extract robot state for observations
+        qpos = self.data.qpos.flat.copy()
+        qvel = self.data.qvel.flat.copy()
+        obs = np.concatenate([qpos, qvel])
+
+        # Calculate forward velocity reward along X-axis
+        forward_reward = self.data.qvel[0]
+        ctrl_cost = 0.001 * np.sum(np.square(action))
+        reward = forward_reward - ctrl_cost
+
+        torso_z_height = self.data.qpos[2]
+        terminated = torso_z_height < 0.15
+        if self.render_mode == "human":
+            self.render()
+
+        return obs, reward, terminated, False, {}
+
+    def _get_obs(self):
+        qpos = self.data.qpos.flat.copy()
+        qvel = self.data.qvel.flat.copy()
+        return np.concatenate([qpos, qvel]).astype(np.float32)
+
+    def reset_model(self):
+        qpos = self.init_qpos.copy()
+        qvel = self.init_qvel.copy()
+
+        qpos += self.np_random.uniform(low=-0.01, high=0.01, size=self.model.nq)
+        qvel += self.np_random.uniform(low=-0.01, high=0.01, size=self.model.nv)
+
+        self.set_state(qpos, qvel)
+
+        return self._get_obs()
+
+    def close(self):
+        super().close()
+        if os.path.exists(self.tmp_model.name):
+            os.remove(self.tmp_model.name)
+
+# env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped.xml", render_mode="human")
+# env = SwappableLocomotionEnv(robot_xml_path="custom_models/quadruped.xml", render_mode="human")
+env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped_wheels.xml", render_mode="human")
+obs, info = env.reset()
+
+zero_action = np.zeros(env.action_space.shape)
+
+max_episode_steps = 100
+step_count = 0
+max_trials = 5
+trials = 0
+while True:
+    obs, reward, terminated, truncated, info = env.step(zero_action)
+    step_count += 1
+
+    if terminated or truncated or step_count >= max_episode_steps:
+        print("Resetting environment!")
+        obs, info = env.reset()
+        step_count = 0
+        trials += 1
+    if trials >= max_trials:
+        break
+
+    time.sleep(env.dt)
+
+env.close()
 
 # uv run -m mujoco.viewer --mjcf=custom_env/custom_models/model.xml

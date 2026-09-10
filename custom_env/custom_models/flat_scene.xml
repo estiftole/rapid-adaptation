@@ -1,0 +1,20 @@
+<mujoco model="shared_walking_arena">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+
+  <option timestep="0.002" integrator="implicitfast">
+    <flag warmstart="enable"/>
+  </option>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.1 0.15 0.2" rgb2="0.2 0.25 0.3"/>
+    <material name="grid_mat" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 4" dir="0 0 -1" directional="true" diffuse="0.8 0.8 0.8"/>
+    <geom name="floor" type="plane" size="0 0 0.05" material="grid_mat" friction="1 0.005 0.0001"/>
+  </worldbody>
+
+  <!-- <include file="model.xml"/> -->
+</mujoco>

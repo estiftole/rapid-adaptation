@@ -1,78 +1,69 @@
-<mujoco model="green_quadruped_uniform">
-  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
-
-  <option timestep="0.002" integrator="implicitfast">
-    <flag warmstart="enable"/>
-  </option>
-
+<mujoco model="green_quadruped">
   <default>
     <geom rgba="0.45 0.7 0.5 1" density="1000" friction="1 0.005 0.0001"/>
     <joint damping="1.0" armature="0.01" limited="true"/>
-    <motor gear="40"/>
+    <motor gear="80"/>
   </default>
 
   <worldbody>
-    <light pos="0 0 20" dir="0 0 -1"/>
-    <geom name="floor" type="plane" size="5 5 0.1" rgba="0.9 0.9 0.9 1"/>
-
-    <body name="torso" pos="0 0 0.45">
+    <body name="torso" pos="0 0 0.85">
       <freejoint/>
-      <geom name="torso_box" type="box" size="0.18 0.1 0.06"/>
+      <geom name="torso_box" type="box" size="0.3 0.18 0.12"/>
 
-      <body name="fl_leg" pos="0.12 0.12 0">
+      <body name="fl_leg" pos="0.22 0.20 0">
         <joint name="fl_hip" type="hinge" axis="0 1 0" range="-60 60"/>
-        <geom name="fl_hip_cyl" type="cylinder" fromto="0 -0.02 0 0 0.04 0" size="0.035"/>
-        <geom name="fl_thigh" type="capsule" fromto="0 0 0 -0.04 0 -0.15" size="0.015"/>
-        <body name="fl_shin" pos="-0.04 0 -0.15">
+        <geom name="fl_hip_cyl" type="cylinder" fromto="0 -0.03 0 0 0.06 0" size="0.05"/>
+        <geom name="fl_thigh" type="capsule" fromto="0 0 0 -0.08 0 -0.3" size="0.025"/>
+        <body name="fl_shin" pos="-0.08 0 -0.3">
           <joint name="fl_knee" type="hinge" axis="0 1 0" range="-120 0"/>
-          <geom name="fl_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <geom name="fl_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
+          <geom name="fl_shin_geom" type="capsule" fromto="0 0 0 0.08 0 -0.3" size="0.02"/>
+          <geom name="fl_foot" type="sphere" pos="0.08 0 -0.3" size="0.035"/>
         </body>
       </body>
 
-      <body name="fr_leg" pos="0.12 -0.12 0">
+      <body name="fr_leg" pos="0.22 -0.20 0">
         <joint name="fr_hip" type="hinge" axis="0 1 0" range="-60 60"/>
-        <geom name="fr_hip_cyl" type="cylinder" fromto="0 0.02 0 0 -0.04 0" size="0.035"/>
-        <geom name="fr_thigh" type="capsule" fromto="0 0 0 -0.04 0 -0.15" size="0.015"/>
-        <body name="fr_shin" pos="-0.04 0 -0.15">
+        <geom name="fr_hip_cyl" type="cylinder" fromto="0 0.03 0 0 -0.06 0" size="0.05"/>
+        <geom name="fr_thigh" type="capsule" fromto="0 0 0 -0.08 0 -0.3" size="0.025"/>
+        <body name="fr_shin" pos="-0.08 0 -0.3">
           <joint name="fr_knee" type="hinge" axis="0 1 0" range="-120 0"/>
-          <geom name="fr_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <geom name="fr_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
+          <geom name="fr_shin_geom" type="capsule" fromto="0 0 0 0.08 0 -0.3" size="0.02"/>
+          <geom name="fr_foot" type="sphere" pos="0.08 0 -0.3" size="0.035"/>
         </body>
       </body>
 
-      <body name="bl_leg" pos="-0.12 0.12 0">
+      <body name="bl_leg" pos="-0.22 0.20 0">
         <joint name="bl_hip" type="hinge" axis="0 1 0" range="-60 60"/>
-        <geom name="bl_hip_cyl" type="cylinder" fromto="0 -0.02 0 0 0.04 0" size="0.035"/>
-        <geom name="bl_thigh" type="capsule" fromto="0 0 0 -0.04 0 -0.15" size="0.015"/>
-        <body name="bl_shin" pos="-0.04 0 -0.15">
+        <geom name="bl_hip_cyl" type="cylinder" fromto="0 -0.03 0 0 0.06 0" size="0.05"/>
+        <geom name="bl_thigh" type="capsule" fromto="0 0 0 -0.08 0 -0.3" size="0.025"/>
+        <body name="bl_shin" pos="-0.08 0 -0.3">
           <joint name="bl_knee" type="hinge" axis="0 1 0" range="-120 0"/>
-          <geom name="bl_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <geom name="bl_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
+          <geom name="bl_shin_geom" type="capsule" fromto="0 0 0 0.08 0 -0.3" size="0.02"/>
+          <geom name="bl_foot" type="sphere" pos="0.08 0 -0.3" size="0.035"/>
         </body>
       </body>
 
-      <body name="br_leg" pos="-0.12 -0.12 0">
+      <body name="br_leg" pos="-0.22 -0.20 0">
         <joint name="br_hip" type="hinge" axis="0 1 0" range="-60 60"/>
-        <geom name="br_hip_cyl" type="cylinder" fromto="0 0.02 0 0 -0.04 0" size="0.035"/>
-        <geom name="br_thigh" type="capsule" fromto="0 0 0 -0.04 0 -0.15" size="0.015"/>
-        <body name="br_shin" pos="-0.04 0 -0.15">
+        <geom name="br_hip_cyl" type="cylinder" fromto="0 0.03 0 0 -0.06 0" size="0.05"/>
+        <geom name="br_thigh" type="capsule" fromto="0 0 0 -0.08 0 -0.3" size="0.025"/>
+        <body name="br_shin" pos="-0.08 0 -0.3">
           <joint name="br_knee" type="hinge" axis="0 1 0" range="-120 0"/>
-          <geom name="br_shin_geom" type="capsule" fromto="0 0 0 0.04 0 -0.15" size="0.012"/>
-          <geom name="br_foot" type="sphere" pos="0.04 0 -0.15" size="0.02"/>
+          <geom name="br_shin_geom" type="capsule" fromto="0 0 0 0.08 0 -0.3" size="0.02"/>
+          <geom name="br_foot" type="sphere" pos="0.08 0 -0.3" size="0.035"/>
         </body>
       </body>
     </body>
   </worldbody>
 
   <actuator>
-    <motor joint="fl_hip" gear="40"/>
-    <motor joint="fl_knee" gear="40"/>
-    <motor joint="fr_hip" gear="40"/>
-    <motor joint="fr_knee" gear="40"/>
-    <motor joint="bl_hip" gear="40"/>
-    <motor joint="bl_knee" gear="40"/>
-    <motor joint="br_hip" gear="40"/>
-    <motor joint="br_knee" gear="40"/>
+    <motor joint="fl_hip" gear="80"/>
+    <motor joint="fl_knee" gear="80"/>
+    <motor joint="fr_hip" gear="80"/>
+    <motor joint="fr_knee" gear="80"/>
+    <motor joint="bl_hip" gear="80"/>
+    <motor joint="bl_knee" gear="80"/>
+    <motor joint="br_hip" gear="80"/>
+    <motor joint="br_knee" gear="80"/>
   </actuator>
 </mujoco>
