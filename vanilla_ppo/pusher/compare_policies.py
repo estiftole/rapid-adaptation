@@ -1,9 +1,8 @@
 import numpy as np
 from stable_baselines3 import PPO
-from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
+# from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from env import CustomPusherEnv
 from train_univ_policy import PrivilegedObservationWrapper
-# import gymnasium as gym
 
 def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, render_mode: str | None = None) -> list:
     print(f"Evaluating {model_type} Model")

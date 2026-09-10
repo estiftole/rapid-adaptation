@@ -4,7 +4,6 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from env import CustomBipedalWalkerEnv
 from train_univ_policy import PrivilegedObservationWrapper
-# import gymnasium as gym
 
 
 def evaluate_model(model_type: str, num_episodes: int = 5, max_steps: int = 500, render_mode: str | None = None) -> list:
