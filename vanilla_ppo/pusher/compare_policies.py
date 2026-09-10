@@ -3,7 +3,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from env import CustomPusherEnv
 from train_univ_policy import PrivilegedObservationWrapper
-import gymnasium as gym
+# import gymnasium as gym
 
 def evaluate_model(model_type: str, num_episodes: int =5, max_steps: int =200, render_mode: str | None = None) -> list:
     print(f"Evaluating {model_type} Model")
@@ -69,14 +69,14 @@ if __name__ == "__main__":
 
     naive_results = evaluate_model("NAIVE", num_episodes, max_steps, render_mode)
     naive_avg = np.mean([r['steps'] for r in naive_results])
-    print(f"\n--- Results (Average Steps Survived) ---")
+    print("\n--- Results (Average Steps Survived) ---")
     print(f"Naive Policy:     {naive_avg:.2f} steps")
     naive_fails = [r for r in naive_results if r['steps'] < max_steps]
     print(f"Naive Policy failed on {len(naive_fails)} out of {num_episodes} episodes.")
 
     univ_results = evaluate_model("UNIVERSAL", num_episodes, max_steps, render_mode)
     univ_avg = np.mean([r['steps'] for r in univ_results])
-    print(f"\n--- Results (Average Steps Survived) ---")
+    print("\n--- Results (Average Steps Survived) ---")
     print(f"Universal Policy: {univ_avg:.2f} steps")
     univ_fails = [r for r in univ_results if r['steps'] < max_steps]
     print(f"Universal Policy failed on {len(univ_fails)} out of {num_episodes} episodes.")
