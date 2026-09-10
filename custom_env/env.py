@@ -46,6 +46,7 @@ class SwappableLocomotionEnv(MujocoEnv):
             mujoco.mjtObj.mjOBJ_BODY,
             "torso"
         )
+
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
 
@@ -69,6 +70,7 @@ class SwappableLocomotionEnv(MujocoEnv):
     def _get_obs(self):
         qpos = self.data.qpos.flat.copy()
         qvel = self.data.qvel.flat.copy()
+
         return np.concatenate([qpos, qvel]).astype(np.float32)
 
     def reset_model(self):
@@ -77,7 +79,6 @@ class SwappableLocomotionEnv(MujocoEnv):
 
         qpos += self.np_random.uniform(low=-0.01, high=0.01, size=self.model.nq)
         qvel += self.np_random.uniform(low=-0.01, high=0.01, size=self.model.nv)
-
         self.set_state(qpos, qvel)
 
         return self._get_obs()
@@ -88,15 +89,10 @@ class SwappableLocomotionEnv(MujocoEnv):
             os.remove(self.tmp_model.name)
 
 if __name__ == "__main__":
-
     robot_xml_path="custom_models/biped.xml"
-    # robot_xml_path="custom_models/biped_wheels.xml"
-    # robot_xml_path="custom_models/quadruped.xml"
-    # robot_xml_path="custom_models/quadruped_wheels.xml"
 
     env = SwappableLocomotionEnv(robot_xml_path=robot_xml_path, render_mode="human")
     obs, info = env.reset()
-
     zero_action = np.zeros(env.action_space.shape)
 
     max_steps = 100
@@ -108,7 +104,7 @@ if __name__ == "__main__":
         steps_left -= 1
 
         if terminated or truncated or steps_left == 0:
-            print("Resetting environment!")
+            print("Resetting...")
             obs, info = env.reset()
             steps_left = max_steps
             trials_left -= 1
@@ -116,5 +112,3 @@ if __name__ == "__main__":
         time.sleep(env.dt)
 
     env.close()
-
-    # uv run -m mujoco.viewer --mjcf=custom_env/custom_models/model.xml
