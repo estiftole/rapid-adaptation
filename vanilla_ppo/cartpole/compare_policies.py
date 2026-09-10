@@ -1,4 +1,3 @@
-import time
 import numpy as np
 from stable_baselines3 import PPO
 from env import CustomCartPoleEnv
