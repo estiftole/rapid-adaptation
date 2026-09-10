@@ -95,7 +95,8 @@ if __name__ == "__main__":
 
     zero_action = np.zeros(env.action_space.shape)
 
-    steps_left = 100
+    max_steps = 100
+    steps_left = max_steps
     trials_left = 5
 
     while (trials_left > 0):
@@ -105,7 +106,7 @@ if __name__ == "__main__":
         if terminated or truncated or steps_left == 0:
             print("Resetting environment!")
             obs, info = env.reset()
-            steps_left = 100
+            steps_left = max_steps
             trials_left -= 1
 
         time.sleep(env.dt)
