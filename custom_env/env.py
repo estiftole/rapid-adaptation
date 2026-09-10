@@ -92,6 +92,7 @@ if __name__ == "__main__":
     robot_xml_path="custom_models/biped.xml"
     # robot_xml_path="custom_models/biped_wheels.xml"
     # robot_xml_path="custom_models/quadruped.xml"
+    # robot_xml_path="custom_models/quadruped_wheels.xml"
 
     env = SwappableLocomotionEnv(robot_xml_path=robot_xml_path, render_mode="human")
     obs, info = env.reset()
@@ -100,7 +101,7 @@ if __name__ == "__main__":
 
     max_steps = 100
     steps_left = max_steps
-    trials_left = 5
+    trials_left = 3
 
     while (trials_left > 0):
         obs, reward, terminated, truncated, info = env.step(zero_action)

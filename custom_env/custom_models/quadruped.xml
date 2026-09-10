@@ -8,7 +8,7 @@
   <worldbody>
     <body name="torso" pos="0 0 0.85">
       <freejoint/>
-      <geom name="torso_box" type="box" size="0.3 0.18 0.12"/>
+      <geom name="torso_box" type="box" size="0.3 0.18 0.05"/>
 
       <body name="fl_leg" pos="0.22 0.20 0">
         <joint name="fl_hip" type="hinge" axis="0 1 0" range="-60 60"/>

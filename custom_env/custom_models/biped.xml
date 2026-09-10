@@ -5,9 +5,9 @@
   </default>
 
   <worldbody>
-    <body name="torso" pos="0 0 4">
+    <body name="torso" pos="0 0 2">
       <freejoint/>
-      <geom name="torso_box" type="box" size="0.1 0.18 0.3"/>
+      <geom name="torso_box" type="box" size="0.08 0.18 0.3"/>
       <geom name="pelvis_sphere" type="sphere" size="0.04" pos="0 0 -0.34"/>
       <body name="left_leg" pos="0 0.12 -0.34">
         <joint name="left_hip" type="hinge" axis="0 1 0" range="-70 45"/>
