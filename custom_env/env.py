@@ -4,11 +4,10 @@ import time
 import mujoco
 from gymnasium.envs.mujoco import MujocoEnv
 import numpy as np
-import typing
 
 class SwappableLocomotionEnv(MujocoEnv):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 100}
-    DEFAULT_CAMERA_CONFIG: typing.ClassVar = {
+    DEFAULT_CAMERA_CONFIG = {
         "distance": 5.5,
         "elevation": -20.0,
         "azimuth": 90.0,
@@ -88,31 +87,29 @@ class SwappableLocomotionEnv(MujocoEnv):
         if os.path.exists(self.tmp_model.name):
             os.remove(self.tmp_model.name)
 
-# env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped.xml", render_mode="human")
-# env = SwappableLocomotionEnv(robot_xml_path="custom_models/quadruped.xml", render_mode="human")
-env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped_wheels.xml", render_mode="human")
-obs, info = env.reset()
+if __name__ == "__main__":
+    # env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped.xml", render_mode="human")
+    # env = SwappableLocomotionEnv(robot_xml_path="custom_models/quadruped.xml", render_mode="human")
+    env = SwappableLocomotionEnv(robot_xml_path="custom_models/biped_wheels.xml", render_mode="human")
+    obs, info = env.reset()
 
-zero_action = np.zeros(env.action_space.shape)
+    zero_action = np.zeros(env.action_space.shape)
 
-max_episode_steps = 100
-step_count = 0
-max_trials = 5
-trials = 0
-while True:
-    obs, reward, terminated, truncated, info = env.step(zero_action)
-    step_count += 1
+    steps_left = 100
+    trials_left = 5
 
-    if terminated or truncated or step_count >= max_episode_steps:
-        print("Resetting environment!")
-        obs, info = env.reset()
-        step_count = 0
-        trials += 1
-    if trials >= max_trials:
-        break
+    while (trials_left > 0):
+        obs, reward, terminated, truncated, info = env.step(zero_action)
+        steps_left -= 1
 
-    time.sleep(env.dt)
+        if terminated or truncated or steps_left == 0:
+            print("Resetting environment!")
+            obs, info = env.reset()
+            steps_left = 100
+            trials_left -= 1
 
-env.close()
+        time.sleep(env.dt)
 
-# uv run -m mujoco.viewer --mjcf=custom_env/custom_models/model.xml
+    env.close()
+
+    # uv run -m mujoco.viewer --mjcf=custom_env/custom_models/model.xml
