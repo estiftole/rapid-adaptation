@@ -1,7 +1,7 @@
 [project]
-name = "rapid-adaptation"
+name = "cross-embodiment"
 version = "0.1.0"
-description = "Add your description here"
+description = "Experiments on cross-embodiment polciies"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
