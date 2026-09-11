@@ -1,1 +1,1 @@
-Exploring models that rapidly adapt to unseen environment parameters.
+Cross-embodiment policies are control policies trained to be able to control different robot bodies.
