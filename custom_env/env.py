@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     max_steps = 100
     steps_left = max_steps
-    trials_left = 3
+    trials_left = 5
 
     while (trials_left > 0):
         obs, reward, terminated, truncated, info = env.step(zero_action)
