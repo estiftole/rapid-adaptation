@@ -1,6 +1,6 @@
 import os
 import tempfile
-import time
+# import time
 import mujoco
 from gymnasium.envs.mujoco import MujocoEnv
 import numpy as np
