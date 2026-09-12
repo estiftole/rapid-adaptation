@@ -89,13 +89,13 @@ class SwappableLocomotionEnv(MujocoEnv):
             os.remove(self.tmp_model.name)
 
 if __name__ == "__main__":
-    robot_xml_path="custom_models/biped.xml"
+    robot_xml_path="custom_models/quadped.xml"
 
     env = SwappableLocomotionEnv(robot_xml_path=robot_xml_path, render_mode="human")
     obs, info = env.reset()
     zero_action = np.zeros(env.action_space.shape)
 
-    max_steps = 100
+    max_steps = 200
     steps_left = max_steps
     trials_left = 5
 
@@ -104,11 +104,10 @@ if __name__ == "__main__":
         steps_left -= 1
 
         if terminated or truncated or steps_left == 0:
-            print("Resetting...")
             obs, info = env.reset()
             steps_left = max_steps
             trials_left -= 1
 
-        time.sleep(env.dt)
+        # time.sleep(env.dt)
 
     env.close()
